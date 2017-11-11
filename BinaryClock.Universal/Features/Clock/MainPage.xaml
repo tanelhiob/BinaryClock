@@ -1,0 +1,69 @@
+﻿<Page
+    x:Class="BinaryClock.Universal.Features.Clock.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:clock ="using:BinaryClock.Universal.Features.Clock"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DataContext="{d:DesignInstance clock:ClockViewModelDesign, IsDesignTimeCreatable=True}"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <clock:BinaryBooleanToColorConverter x:Key="BinaryBooleanToColorConverter"/>
+
+        <ItemsPanelTemplate x:Key="ItemsPanelNumberTemplate">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </ItemsPanelTemplate>
+        <DataTemplate x:Key="ItemsPanelNumberItemTemplate">
+            <ItemsControl ItemsSource="{Binding}" Style="{StaticResource ItemsPanelDigitStyle}"/>
+        </DataTemplate>
+        <Style TargetType="ItemsControl" x:Key="ItemsPanelNumberStyle">
+            <Setter Property="ItemsPanel" Value="{StaticResource ItemsPanelNumberTemplate}"/>
+            <Setter Property="ItemTemplate" Value="{StaticResource ItemsPanelNumberItemTemplate}"/>
+        </Style>
+        
+        <ItemsPanelTemplate x:Key="ItemsPanelDigitTemplate">
+            <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </ItemsPanelTemplate>
+        <DataTemplate x:Key="ItemsPanelDigitItemTemplate">
+            <Rectangle Margin="10,10,10,10" Width="100" Height="100" Fill="{Binding Value, Converter={StaticResource BinaryBooleanToColorConverter}}"/>
+        </DataTemplate>
+        <Style TargetType="ItemsControl" x:Key="ItemsPanelDigitStyle">
+            <Setter Property="ItemsPanel" Value="{StaticResource ItemsPanelDigitTemplate}"/>
+            <Setter Property="ItemTemplate" Value="{StaticResource ItemsPanelDigitItemTemplate}"/>
+        </Style>
+        
+        <Style TargetType="TextBlock" x:Key="TextBlockNumberSeparator">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="TextAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="128"/>
+            <Setter Property="Text" Value=":"/>
+            <Setter Property="Margin" Value="0,-32,0,0"/>
+        </Style>
+    </Page.Resources>
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="0.1*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="0.1*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <ItemsControl Grid.Column="0" ItemsSource="{Binding EnumerableHourBinaryDigits}" Style="{StaticResource ItemsPanelNumberStyle}"/>
+
+            <TextBlock Grid.Column="1" Style="{StaticResource TextBlockNumberSeparator}"/>
+
+            <ItemsControl Grid.Column="2" ItemsSource="{Binding EnumerableMinuteBinaryDigits}" Style="{StaticResource ItemsPanelNumberStyle}"/>
+
+            <TextBlock Grid.Column="3" Style="{StaticResource TextBlockNumberSeparator}"/>
+
+            <ItemsControl Grid.Column="4" ItemsSource="{Binding EnumerableSecondBinaryDigits}" Style="{StaticResource ItemsPanelNumberStyle}"/>
+        </Grid>
+    </Grid>
+</Page>
+
